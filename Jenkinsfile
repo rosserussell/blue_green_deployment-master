@@ -89,7 +89,7 @@ pipeline
                  echo "Checking if terraform s3 boostrap bucket for vpc environment exists"
 
                  // Check if bucket exists before creating it. This is used by terraform to save the state file
-                 aws_list_bucket = "aws s3api list-buckets --query \"Buckets[].Name\" | grep \"01-production\" | awk '{print \$1}'  | awk '{print substr(\$1,2); }' | awk '{print substr(\$1, 1, length(\$1)-2)}'"
+                 aws_list_bucket = "aws s3api list-buckets --query \"Buckets[].Name\" | grep \"my-production\" | awk '{print \$1}'  | awk '{print substr(\$1,2); }' | awk '{print substr(\$1, 1, length(\$1)-2)}'"
 
                  echo "aws_list_bucket string is: $aws_list_bucket"
 
@@ -104,10 +104,10 @@ pipeline
                  echo "done printing"
                 
 
-                 if ("$bucketResult".toString().equals("01-production")) {  
+                 if ("$bucketResult".toString().equals("my-production")) {  
                     echo "terraform bucket already exists."
                  } else {
-                    sh 'aws s3 mb s3://01-production --region us-west-1'
+                    sh 'aws s3 mb s3://my-production --region us-west-1'
                     echo "Created terraform bucket."
                  }
 
