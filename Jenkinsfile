@@ -188,7 +188,8 @@ pipeline
                  thisTestNameVar = "test-name=\"" + "$thisTestValue" + "\"";
 
                  def readContent = readFile 'terraform.tfvars'
-                 writeFile file: 'terraform.tfvars', text: readContent+"\n$amiNameTag"+"\n$thisTestNameVar"
+                 // debug no update of terraform.tfvars
+                 // writeFile file: 'terraform.tfvars', text: readContent+"\n$amiNameTag"+"\n$thisTestNameVar"
                  // debug
                  sh 'cat ./terraform.tfvars'
 
