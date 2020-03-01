@@ -1,13 +1,13 @@
 region = "us-west-1"
-availability_zones = ["us-west-1a", "us-west-1b"]
+availability_zones = ["us-west-1b", "us-west-1c"]
 #cidr_block = "10.0.0.0/16"
 cidr_block = "10.1.0.0/16"
 prod_environment = "PRODUCTION"
 Tool = "Terraform"
-Created_By = "Ochoa"
-project_domain = "ochoajenkins.com"
+Created_By = "rosserussell"
+project_domain = "rosserusselljenkins.com"
 environment = "GREEN"
 dns_record_identifier = "BLUE-GREEN"
 environment_weight = "100"
-build_id="devops-import-server-29"
+build_id="devops_tomcat-1580974710"
 test-name="exploratory-testing"
