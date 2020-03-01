@@ -1,5 +1,5 @@
-pipeline
-{
+pipeline 
+{ 
   agent any
 
   options {
@@ -12,7 +12,7 @@ pipeline
     amiNameTagValue = "";
     thisTestNameVar = "";
     thisTestValue = "exploratory-testing";
-    ProjectName = "FirstRun";
+    ProjectName = "FirstRun-Build";
     fileProperties = "file.properties"
     old_environment = "";
   }
@@ -62,7 +62,7 @@ pipeline
       {
         steps
         {
-           echo "Starting --- deployment"
+           echo "Starting --- deployment" 
            sh 'pwd'
            script {
               env.DEPLOY_TO = input message: 'Please select environment location to deploy', parameters: [choice(name: 'Environments Available', choices: 'BLUE\nGREEN', description: 'WARNING: Before deploying release, the selected environment will be replaced with the new deployment' )]
@@ -93,7 +93,7 @@ pipeline
 
                  echo "aws_list_bucket string is: $aws_list_bucket"
 
-                 def bucketResult;
+                 def bucketResult; 
                  bucketResult = sh (returnStdout: true, script: "eval ${aws_list_bucket}");
 
                  // Remove blank lines from result
@@ -102,9 +102,9 @@ pipeline
                  echo "bucket result is:"
                  echo "'$bucketResult'"
                  echo "done printing"
+                
 
-
-                 if ("$bucketResult".toString().equals("my-production")) {
+                 if ("$bucketResult".toString().equals("my-production")) {  
                     echo "terraform bucket already exists."
                  } else {
                     sh 'aws s3 mb s3://my-production --region us-west-1'
@@ -126,7 +126,7 @@ pipeline
                  sh '/usr/local/bin/terraform init -input=false'
                  sh '/usr/local/bin/terraform plan'
                  sh '/usr/local/bin/terraform apply -auto-approve'
-
+              
               }
            }
 
@@ -165,12 +165,12 @@ pipeline
                  echo "bucket result is:"
                  echo "'$bucketResult'"
                  echo "done printing"
-
+               
                  def s3BucketName = "my-prod-${deployToLC}" 
                  echo "s3BucketName name is:"
                  echo "'$s3BucketName'"
 
-		 if ("$bucketResult".toString().equals("$s3BucketName".toString())) {
+		 if ("$bucketResult".toString().equals("$s3BucketName".toString())) {  
                     echo "terraform bucket already exists."
                  } else {
                     sh 'aws s3 mb s3://"$s3BucketName".toString() --region us-west-1'
@@ -197,7 +197,7 @@ pipeline
                  } catch (err) {
                     sh '/usr/local/bin/terraform apply -auto-approve'
                  }
-
+              
               }
            }
 
@@ -213,8 +213,8 @@ pipeline
 
            sh 'pwd'
            script {
-
-              if (env.DEPLOY_TO == "GREEN") {
+          
+              if (env.DEPLOY_TO == "GREEN") {  
                  old_environment = "BLUE"
                  echo "setting old_environment to: $old_environment"
               } else {
@@ -230,21 +230,21 @@ pipeline
               echo "Destroy Environment:  "
               echo "${env.Destroy_Environment}"
 
-              if (env.Destroy_Environment == "YES") {
+              if (env.Destroy_Environment == "YES") {  
                  dir("$old_environment")
                  {
                     sh 'pwd'
 
                    // Terraform fails if it is unable to retrieve the amiName from the data, even though it does not need it,
-                   // because this is a destroy call.
+                   // because this is a destroy call. 
                    def readContent = readFile 'terraform.tfvars'
                    writeFile file: 'terraform.tfvars', text: readContent+"\n$amiNameTag"+"\n$thisTestNameVar"
 
                    echo "Test completed, destroying environment"
                    sh '/usr/local/bin/terraform destroy -auto-approve'
                  }
-              }
-              echo "Done with stage"
+              } 
+              echo "Done with stage" 
            }
         }
       }
