@@ -180,13 +180,17 @@ pipeline
 
                  echo "update terraform variables "
                  sh 'pwd'
-
+                 // debug
+                 sh 'cat ./terraform.tfvars'
+ 
                  amiNameTagValue = "$this_artifact" + "-" + "$this_jenkins_build_id";
                  amiNameTag = "build_id=\"" + "$amiNameTagValue" + "\"";
                  thisTestNameVar = "test-name=\"" + "$thisTestValue" + "\"";
 
                  def readContent = readFile 'terraform.tfvars'
                  writeFile file: 'terraform.tfvars', text: readContent+"\n$amiNameTag"+"\n$thisTestNameVar"
+                 // debug
+                 sh 'cat ./terraform.tfvars'
 
                  sh 'pwd'
                  sh 'ls -l'
