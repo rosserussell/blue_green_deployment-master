@@ -1,0 +1,3 @@
+terraform init -input=false
+terraform plan
+terraform apply -auto-approve
