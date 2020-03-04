@@ -36,18 +36,24 @@ pipeline
           echo "Destroy BLUE"
           dir('BLUE')
           {
+            sh '/usr/local/bin/terraform init'
+            sh '/usr/local/bin/terraform plan'
             sh '/usr/local/bin/terraform destroy -auto-approve'
           }
 
           echo "Destroy GREEN"
           dir('../GREEN')
           {
+            sh '/usr/local/bin/terraform init'
+            sh '/usr/local/bin/terraform plan'
             sh '/usr/local/bin/terraform destroy -auto-approve'
           }
 
           echo "Destroy production VPC"
           dir('../production')
           {
+            sh '/usr/local/bin/terraform init'
+            sh '/usr/local/bin/terraform plan'
             sh '/usr/local/bin/terraform destroy -auto-approve'
           }
         }
