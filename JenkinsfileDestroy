@@ -32,18 +32,19 @@ pipeline
      {
         echo "Starting --- destroy"
         sh 'pwd'
+        script {
+          echo "Destroy BLUE"
+          dir('BLUE')
+          sh '/usr/local/bin/terraform destroy -auto-approve'
 
-        echo "Destroy BLUE"
-        dir('BLUE')
-        sh '/usr/local/bin/terraform destroy -auto-approve'
+          echo "Destroy GREEN"
+          dir('../GREEN')
+          sh '/usr/local/bin/terraform destroy -auto-approve'
 
-        echo "Destroy GREEN"
-        dir('../GREEN')
-        sh '/usr/local/bin/terraform destroy -auto-approve'
-
-        echo "Destroy production VPC"
-        dir('../production')
-        sh '/usr/local/bin/terraform destroy -auto-approve'
+          echo "Destroy production VPC"
+          dir('../production')
+          sh '/usr/local/bin/terraform destroy -auto-approve'
+        }
      }
    }
   }
