@@ -36,6 +36,7 @@ pipeline
           echo "Destroy BLUE"
           dir('BLUE')
           {
+            sh 'pwd'
             sh '/usr/local/bin/terraform init'
             sh '/usr/local/bin/terraform plan'
             sh '/usr/local/bin/terraform destroy -auto-approve'
@@ -44,6 +45,7 @@ pipeline
           echo "Destroy GREEN"
           dir('../GREEN')
           {
+            sh 'pwd'
             sh '/usr/local/bin/terraform init'
             sh '/usr/local/bin/terraform plan'
             sh '/usr/local/bin/terraform destroy -auto-approve'
@@ -52,6 +54,7 @@ pipeline
           echo "Destroy production VPC"
           dir('../production')
           {
+            sh 'pwd'
             sh '/usr/local/bin/terraform init'
             sh '/usr/local/bin/terraform plan'
             sh '/usr/local/bin/terraform destroy -auto-approve'
