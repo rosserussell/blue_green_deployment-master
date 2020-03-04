@@ -189,7 +189,7 @@ pipeline
 
                  def readContent = readFile 'terraform.tfvars'
                  // debug no update of terraform.tfvars
-                 // writeFile file: 'terraform.tfvars', text: readContent+"\n$amiNameTag"+"\n$thisTestNameVar"
+                 writeFile file: 'terraform.tfvars', text: readContent+"\n$amiNameTag"+"\n$thisTestNameVar"
                  // debug
                  sh 'cat ./terraform.tfvars'
 
