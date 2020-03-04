@@ -1,0 +1,50 @@
+pipeline
+{
+  agent any
+
+  options {
+        disableConcurrentBuilds()
+  }
+  environment {
+    amiNameTag = ""
+    amiNameTagValue = "";
+    thisTestNameVar = "";
+    thisTestValue = "exploratory-testing";
+    ProjectName = "FirstRun";
+    fileProperties = "file.properties"
+    old_environment = "";
+  }
+  stages {
+   stage('Get Blue-Green Deployment Repo')
+   {
+      steps {
+        echo "Getting Exploratory Testing Repo"
+        git(
+        url:'git@github.com:rosserussell/blue_green_deployment-master.git',
+        credentialsId: 'blue_green_deployment',
+        branch: "master"
+        )
+     }
+   }
+   stage('Destroy Environment')
+   {
+     steps
+     {
+        echo "Starting --- destroy"
+
+        sh 'pwd'
+        echo "Destroy BLUE"
+        dir('BLUE')
+        sh './destroy'
+
+        echo "Destroy GREEN"
+        dir('../GREEN')
+        sh './destroy'
+
+        echo "Destroy production VPC"
+        dir('../production')
+        sh './destroy'
+     }
+   }
+  }
+}
