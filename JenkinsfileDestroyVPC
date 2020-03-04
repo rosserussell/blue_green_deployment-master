@@ -1,0 +1,53 @@
+pipeline
+{
+  agent any
+
+  options {
+        disableConcurrentBuilds()
+  }
+  environment {
+    amiNameTag = ""
+    amiNameTagValue = "";
+    thisTestNameVar = "";
+    thisTestValue = "exploratory-testing";
+    ProjectName = "FirstRun";
+    fileProperties = "file.properties"
+    old_environment = "";
+  }
+  stages {
+
+   stage('Get Blue-Green Deployment Repo')
+   {
+      steps {
+        echo "Getting Exploratory Testing Repo"
+        git(
+        url:'git@github.com:rosserussell/blue_green_deployment-master.git',
+        credentialsId: 'blue_green_deployment',
+        branch: "master"
+        )
+     }
+   }   
+
+   stage('Destroy Production VPC')
+   {
+     steps
+     {
+        echo "Starting --- destroy"
+        sh 'pwd'
+        script {
+
+          echo "Destroy production VPC"
+          dir('production')
+          {
+            sh 'pwd'
+            sh 'ls -al'
+            sh '/usr/local/bin/terraform init'
+            sh '/usr/local/bin/terraform plan'
+            sh '/usr/local/bin/terraform destroy -auto-approve'
+          }
+        }
+     }
+   }
+
+  }
+}
