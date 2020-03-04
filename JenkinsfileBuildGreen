@@ -52,7 +52,9 @@ pipeline
         steps
         {
            echo "Starting --- terraform deploy and start"
-           env.DEPLOY_TO = "GREEN"
+           script {
+              env.DEPLOY_TO = "GREEN"
+           }           
            sh 'pwd'
            dir("${env.DEPLOY_TO}")
            {
