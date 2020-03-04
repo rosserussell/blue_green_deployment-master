@@ -15,6 +15,7 @@ pipeline
     old_environment = "";
   }
   stages {
+
    stage('Get Blue-Green Deployment Repo')
    {
       steps {
@@ -26,14 +27,14 @@ pipeline
         )
      }
    }
-   stage('Destroy Environment')
+
+   stage('Destroy Blue Environment')
    {
      steps
      {
-        echo "Starting --- destroy"
         sh 'pwd'
         script {
-/*
+
           echo "Destroy BLUE"
           dir('BLUE')
           {
@@ -43,7 +44,17 @@ pipeline
             sh '/usr/local/bin/terraform plan'
             sh '/usr/local/bin/terraform destroy -auto-approve'
           }
-*/
+        }
+     }
+   }
+
+   stage('Destroy Green Environment')
+   {
+     steps
+     {
+        sh 'pwd'
+        script {
+
           echo "Destroy GREEN"
           dir('GREEN')
           {
@@ -52,7 +63,18 @@ pipeline
             sh '/usr/local/bin/terraform init'
             sh '/usr/local/bin/terraform plan'
             sh '/usr/local/bin/terraform destroy -auto-approve'
-          }
+          }          
+        }
+     }
+   }
+
+   stage('Destroy Production VPC')
+   {
+     steps
+     {
+        echo "Starting --- destroy"
+        sh 'pwd'
+        script {
 
           echo "Destroy production VPC"
           dir('production')
@@ -66,5 +88,6 @@ pipeline
         }
      }
    }
+
   }
 }
