@@ -45,7 +45,7 @@ pipeline
           }
 */
           echo "Destroy GREEN"
-          dir('../GREEN')
+          dir('GREEN')
           {
             sh 'pwd'
             sh 'ls -al'
@@ -55,7 +55,7 @@ pipeline
           }
 
           echo "Destroy production VPC"
-          dir('../production')
+          dir('production')
           {
             sh 'pwd'
             sh 'ls -al'
