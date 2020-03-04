@@ -31,19 +31,19 @@ pipeline
      steps
      {
         echo "Starting --- destroy"
-
         sh 'pwd'
+
         echo "Destroy BLUE"
         dir('BLUE')
-        sh './destroy'
+        sh '/usr/local/bin/terraform destroy -auto-approve'
 
         echo "Destroy GREEN"
         dir('../GREEN')
-        sh './destroy'
+        sh '/usr/local/bin/terraform destroy -auto-approve'
 
         echo "Destroy production VPC"
         dir('../production')
-        sh './destroy'
+        sh '/usr/local/bin/terraform destroy -auto-approve'
      }
    }
   }
