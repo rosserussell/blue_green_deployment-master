@@ -39,10 +39,12 @@ pipeline
           echo "Destroy production VPC"
           dir('production')
           {
-            sh 'pwd'
-            sh 'ls -al'
-            sh '/usr/local/bin/terraform init'
-            sh '/usr/local/bin/terraform plan'
+            
+            // Terraform fails if it is unable to retrieve the amiName from the data, even though it does not need it,
+            // because this is a destroy call. 
+            def readContent = readFile 'terraform.tfvars'
+            writeFile file: 'terraform.tfvars', text: readContent+"\n$amiNameTag"+"\n$thisTestNameVar"
+            echo "Test completed, destroying environment"
             sh '/usr/local/bin/terraform destroy -auto-approve'
           }
         }
