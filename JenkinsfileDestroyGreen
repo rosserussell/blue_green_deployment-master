@@ -27,6 +27,31 @@ pipeline
         )
      }
    }
+     
+   stage('Read Properties File') {
+      steps {
+        script {
+
+           copyArtifacts(projectName: "${ProjectName}");
+           props = readProperties file:"${fileProperties}";
+
+           this_group = props.Group;
+           this_version = props.Version;
+           this_artifact = props.ArtifactId;
+           this_full_build_id = props.FullBuildId;
+           this_jenkins_build_id = props.JenkinsBuildId;
+        }
+
+        sh "echo Finished setting this_group = $this_group"
+        sh "echo Finished setting this_version = $this_version"
+        sh "echo Finished setting this_artifact = $this_artifact"
+        sh "echo Finished setting this_full_build_id = $this_full_build_id"
+        sh "echo Finished setting this_jenkins_build_id = $this_jenkins_build_id"
+
+      }
+    }
+
+
 
    stage('Destroy Green Environment')
    {
@@ -39,11 +64,17 @@ pipeline
           dir('GREEN')
           {
             sh 'pwd'
+
+            amiNameTagValue = "$this_artifact" + "-" + "$this_jenkins_build_id";
+            amiNameTag = "build_id=\"" + "$amiNameTagValue" + "\"";
+            thisTestNameVar = "test-name=\"" + "$thisTestValue" + "\"";
+
             // Terraform fails if it is unable to retrieve the amiName from the data, even though it does not need it,
             // because this is a destroy call. 
             def readContent = readFile 'terraform.tfvars'
             writeFile file: 'terraform.tfvars', text: readContent+"\n$amiNameTag"+"\n$thisTestNameVar"
-            echo "Test completed, destroying environment"
+            echo "Test completed, destroying GREEN environment"
+            sh '/usr/local/bin/terraform init'
             sh '/usr/local/bin/terraform destroy -auto-approve'
           }
         }
